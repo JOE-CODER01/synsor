@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Olad & Synsor Wears</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --red: #C41E2A;
+      --black: #0A0A0A;
+      --white: #FFFFFF;
+      --gray: #F2F2F2;
+      --text-secondary: #666666;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--black);
+    }
+
+    /* TICKER */
+    .ticker {
+      background: var(--red);
+      color: white;
+      padding: 8px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .ticker-inner {
+      display: inline-block;
+      animation: ticker 20s linear infinite;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    @keyframes ticker {
+      0% { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* NAVBAR */
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid #E8E8E8;
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .nav-link {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      text-decoration: none;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .btn-red {
+      background: var(--red);
+      color: white;
+      padding: 10px 20px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 200ms;
+    }
+
+    .btn-red:hover { background: #A01020; }
+
+    /* HERO - SPLIT LAYOUT */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 85vh;
+    }
+
+    .hero-left {
+      background: var(--black);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 48px 40px;
+    }
+
+    .hero-issue {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      font-weight: 300;
+      color: white;
+      line-height: 1;
+      margin-bottom: 24px;
+    }
+
+    .hero-title span {
+      font-weight: 700;
+      font-style: italic;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: #999;
+      line-height: 1.8;
+      margin-bottom: 32px;
+      max-width: 280px;
+    }
+
+    .hero-right {
+      background: var(--gray);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-right-top {
+      flex: 1;
+      background: #1A1A1A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    .hero-right-top p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 120px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.05);
+      line-height: 1;
+    }
+
+    .hero-right-bottom {
+      padding: 24px;
+      background: var(--red);
+      color: white;
+    }
+
+    .hero-right-bottom h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .hero-right-bottom p {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    /* CATEGORIES */
+    .categories {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin: 2px 0;
+    }
+
+    .category-card {
+      background: var(--gray);
+      padding: 40px 24px;
+      cursor: pointer;
+      transition: background 200ms;
+      text-decoration: none;
+      color: var(--black);
+    }
+
+    .category-card:hover { background: #E8E8E8; }
+
+    .category-card.active {
+      background: var(--black);
+      color: white;
+    }
+
+    .category-number {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--red);
+      margin-bottom: 12px;
+    }
+
+    .category-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 700;
+    }
+
+    .category-count {
+      font-size: 12px;
+      margin-top: 8px;
+      opacity: 0.6;
+    }
+
+    /* PRODUCTS */
+    .products-section {
+      padding: 48px 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      border-bottom: 1px solid #E8E8E8;
+      padding-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 700;
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+
+    .product-card {
+      background: var(--gray);
+      cursor: pointer;
+      transition: transform 200ms;
+    }
+
+    .product-card:hover { transform: translateY(-2px); }
+
+    .product-img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+      background: #DCDCDC;
+    }
+
+    .product-img-placeholder {
+      width: 100%;
+      height: 260px;
+      background: #DCDCDC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      color: #AAAAAA;
+    }
+
+    .product-info {
+      padding: 16px;
+    }
+
+    .product-category {
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .product-price {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .btn-order {
+      display: block;
+      width: 100%;
+      background: var(--black);
+      color: white;
+      padding: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 200ms;
+    }
+
+    .btn-order:hover { background: var(--red); }
+
+    /* FOOTER */
+    .footer {
+      background: var(--black);
+      color: white;
+      padding: 48px 24px;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #222;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: 4px;
+    }
+
+    .footer-info p {
+      font-size: 13px;
+      color: #666;
+      line-height: 2;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: #444;
+    }
+
+    /* FLOATING WHATSAPP */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 32px;
+      right: 24px;
+      z-index: 999;
+      background: #25D366;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      transition: transform 200ms ease;
+      text-decoration: none;
+    }
+
+    .whatsapp-float:hover { transform: scale(1.1); }
+
+    /* MOBILE */
+    @media (max-width: 479px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      .hero-left { min-height: 70vh; padding: 40px 20px; }
+      .hero-title { font-size: 56px; }
+      .footer-top { flex-direction: column; gap: 24px; }
+      .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+      .nav-link { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TICKER -->
+  <div class="ticker">
+    <span class="ticker-inner">
+      NEW DROPS AVAILABLE &nbsp;&nbsp;&nbsp; BAGGY FITS &nbsp;&nbsp;&nbsp; CORPORATE WEARS &nbsp;&nbsp;&nbsp; OGUNPA, IBADAN &nbsp;&nbsp;&nbsp; ORDER ON WHATSAPP &nbsp;&nbsp;&nbsp; NEW DROPS AVAILABLE &nbsp;&nbsp;&nbsp; BAGGY FITS &nbsp;&nbsp;&nbsp; CORPORATE WEARS &nbsp;&nbsp;&nbsp;
+    </span>
+  </div>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <h1 class="logo">Olad & Synsor</h1>
+    <div class="nav-right">
+      <a href="#products" class="nav-link">Shop</a>
+      <a href="https://wa.me/2347040679105?text=Hi%20Olad%20%26%20Synsor%20Wears!%20I%20want%20to%20place%20an%20order" class="btn-red" target="_blank">Order Now</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-issue">SS 2026 Collection</p>
+      <h2 class="hero-title">Wear<br><span>Bold.</span><br>Live<br><span>Free.</span></h2>
+      <p class="hero-desc">Baggy fits and corporate looks for the streets of Ibadan. Built for those who dress with intention.</p>
+      <a href="#products" class="btn-red">Explore Collection</a>
+    </div>
+    <div class="hero-right">
+      <div class="hero-right-top">
+        <p>OS</p>
+      </div>
+      <div class="hero-right-bottom">
+        <h3>New Season. New Fits.</h3>
+        <p>Streetwear meets corporate. Only at Ogunpa.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES -->
+  <div class="categories">
+    <a href="#products" class="category-card active">
+      <p class="category-number">01</p>
+      <h3 class="category-name">Street wear</h3>
+      <p class="category-count">Baggy fits & sneakers</p>
+    </a>
+    <a href="#products" class="category-card">
+      <p class="category-number">02</p>
+      <h3 class="category-name">Corporate</h3>
+      <p class="category-count">Clean & professional</p>
+    </a>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section class="products-section" id="products">
+    <div class="section-header">
+      <h3 class="section-title">Latest Drops</h3>
+      <span class="section-sub">New Arrivals</span>
+    </div>
+    <div class="product-grid" id="product-grid">
+      <div class="product-card">
+        <div class="product-img-placeholder">OS</div>
+        <div class="product-info">
+          <p class="product-category">Streetwear</p>
+          <h4 class="product-name">Loading...</h4>
+          <p class="product-price">₦0,000</p>
+          <a href="#" class="btn-order">Order on WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-top">
+      <h2 class="footer-logo">O&S</h2>
+      <div class="footer-info">
+        <p>Olad & Synsor Wears</p>
+        <p>Ogunpa, Ibadan</p>
+        <p>+234 704 067 9105</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 Olad & Synsor Wears.</p>
+      <a href="https://wa.me/2347040679105?text=Hi%20Olad%20%26%20Synsor%20Wears!%20I%20want%20to%20place%20an%20order" class="btn-red" target="_blank">Order on WhatsApp</a>
+    </div>
+  </footer>
+
+  <!-- FLOATING WHATSAPP -->
+  <a href="https://wa.me/2347040679105?text=Hi%20Olad%20%26%20Synsor%20Wears!%20I%20want%20to%20place%20an%20order"
+     class="whatsapp-float"
+     target="_blank"
+     aria-label="Order on WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2
