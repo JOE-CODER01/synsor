@@ -224,7 +224,7 @@
       }
 
       log('Step 6: Saving to Firestore...');
-
+await new Promise(resolve => setTimeout(resolve, 1000));
       try {
         const docRef = await addDoc(collection(db, 'products'), {
           name,
