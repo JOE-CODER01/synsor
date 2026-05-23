@@ -7,16 +7,14 @@
   box-sizing: border-box;
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Inter', -apple-system, sans-serif;
   font-size: 16px;
   line-height: 1.6;
-  color: #000000;
-  background: #FFFFFF;
+  color: #FFFFFF;
+  background: #0A0A0A;
 }
 
 h1, h2, h3, h4 {
@@ -36,14 +34,14 @@ h1, h2, h3, h4 {
 =================== */
 .btn-primary {
   display: inline-block;
-  background: #000000;
-  color: #FFFFFF;
+  background: #D4AF37;
+  color: #000000;
   padding: 12px 24px;
   font-family: 'Inter', sans-serif;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  border: 1px solid #000000;
+  border: 1px solid #D4AF37;
   border-radius: 0px;
   text-decoration: none;
   cursor: pointer;
@@ -51,18 +49,18 @@ h1, h2, h3, h4 {
 }
 
 .btn-primary:hover {
-  background: #333333;
-  border-color: #333333;
+  background: #BFA030;
+  border-color: #BFA030;
 }
 
 .btn-secondary {
   display: inline-block;
-  background: #FFFFFF;
-  color: #000000;
+  background: transparent;
+  color: #D4AF37;
   padding: 12px 24px;
   font-size: 16px;
   font-weight: 600;
-  border: 2px solid #000000;
+  border: 2px solid #D4AF37;
   border-radius: 0px;
   text-decoration: none;
   cursor: pointer;
@@ -70,7 +68,7 @@ h1, h2, h3, h4 {
 }
 
 .btn-secondary:hover {
-  background: #F5F5F5;
+  background: rgba(212,175,55,0.1);
 }
 
 /* ==================
@@ -84,15 +82,15 @@ h1, h2, h3, h4 {
   align-items: center;
   justify-content: space-between;
   padding: 16px 24px;
-  background: #FFFFFF;
-  border-bottom: 1px solid #CCCCCC;
+  background: #0A0A0A;
+  border-bottom: 1px solid #D4AF37;
 }
 
 .logo {
   font-family: 'Playfair Display', serif;
   font-size: 28px;
   font-weight: 700;
-  color: #000000;
+  color: #D4AF37;
   letter-spacing: 4px;
 }
 
@@ -105,6 +103,7 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   padding: 64px 24px;
+  border-bottom: 1px solid #D4AF37;
 }
 
 .hero-content {
@@ -117,7 +116,7 @@ h1, h2, h3, h4 {
   font-weight: 600;
   letter-spacing: 3px;
   text-transform: uppercase;
-  color: #999999;
+  color: #D4AF37;
   margin-bottom: 16px;
 }
 
@@ -132,7 +131,7 @@ h1, h2, h3, h4 {
 
 .hero-sub {
   font-size: 18px;
-  color: #D3D3D3;
+  color: #999999;
   margin-bottom: 40px;
   line-height: 1.6;
 }
@@ -142,14 +141,14 @@ h1, h2, h3, h4 {
 =================== */
 .catalogue {
   padding: 64px 0;
-  background: #F5F5F5;
+  background: #111111;
 }
 
 .section-title {
   font-family: 'Playfair Display', serif;
   font-size: 32px;
   font-weight: 700;
-  color: #000000;
+  color: #D4AF37;
   margin-bottom: 40px;
 }
 
@@ -163,16 +162,16 @@ h1, h2, h3, h4 {
    PRODUCT CARD
 =================== */
 .product-card {
-  background: #FFFFFF;
-  border: 1px solid #CCCCCC;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-  transition: box-shadow 200ms ease, border-color 200ms ease;
+  background: #1A1A1A;
+  border: 1px solid #D4AF37;
+  box-shadow: 0 1px 3px rgba(212,175,55,0.1);
+  transition: box-shadow 200ms ease, transform 200ms ease;
   cursor: pointer;
 }
 
 .product-card:hover {
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  border-color: #999999;
+  box-shadow: 0 4px 16px rgba(212,175,55,0.2);
+  transform: translateY(-2px);
 }
 
 .product-card img {
@@ -190,14 +189,14 @@ h1, h2, h3, h4 {
   font-family: 'Playfair Display', serif;
   font-size: 18px;
   font-weight: 700;
-  color: #000000;
+  color: #FFFFFF;
   margin-bottom: 8px;
 }
 
 .product-price {
   font-size: 16px;
   font-weight: 600;
-  color: #333333;
+  color: #D4AF37;
   margin-bottom: 16px;
 }
 
@@ -209,7 +208,7 @@ h1, h2, h3, h4 {
 
 .loading {
   font-size: 16px;
-  color: #333333;
+  color: #666666;
   padding: 48px 0;
   text-align: center;
 }
@@ -226,26 +225,27 @@ h1, h2, h3, h4 {
 }
 
 .tab-btn {
-  background: #FFFFFF;
-  color: #000000;
-  border: 1px solid #CCCCCC;
-  padding: 12px 24px;
+  background: #1A1A1A;
+  color: #D4AF37;
+  border: 1px solid #D4AF37;
+  padding: 10px 20px;
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   border-radius: 0px;
   transition: all 200ms ease;
+  white-space: nowrap;
 }
 
 .tab-btn:hover {
-  background: #F5F5F5;
+  background: rgba(212,175,55,0.1);
 }
 
 .tab-btn.active {
-  background: #000000;
-  color: #FFFFFF;
-  border-color: #000000;
+  background: #D4AF37;
+  color: #000000;
+  border-color: #D4AF37;
 }
 
 /* ==================
@@ -256,22 +256,27 @@ h1, h2, h3, h4 {
   color: #FFFFFF;
   padding: 64px 24px;
   text-align: center;
+  border-top: 1px solid #D4AF37;
 }
 
 .footer .logo {
-  color: #FFFFFF;
+  color: #D4AF37;
   margin-bottom: 16px;
 }
 
 .footer p {
-  color: #D3D3D3;
+  color: #999999;
   margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
 }
 
 .footer-copy {
   margin-top: 40px;
   font-size: 12px;
-  color: #666666;
+  color: #444444;
 }
 
 /* ==================
@@ -289,40 +294,25 @@ h1, h2, h3, h4 {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   transition: transform 200ms ease, box-shadow 200ms ease;
 }
 
 .whatsapp-float:hover {
   transform: scale(1.1);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
 }
 
 /* ==================
    RESPONSIVE
 =================== */
 @media (max-width: 479px) {
-  .hero-title {
-    font-size: 56px;
-  }
-
-  .navbar {
-    padding: 16px;
-  }
-
-  .btn-primary, .btn-secondary {
-    padding: 14px 28px;
-  }
-
-  .product-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .section-title {
-    font-size: 24px;
-  }
-
-  .category-tabs {
-    flex-wrap: wrap;
-  }
+  .hero-title { font-size: 48px; }
+  .hero { padding: 48px 16px; }
+  .navbar { padding: 12px 16px; }
+  .logo { font-size: 20px; letter-spacing: 2px; }
+  .btn-primary, .btn-secondary { padding: 14px 20px; font-size: 14px; }
+  .tab-btn { padding: 10px 16px; font-size: 13px; }
+  .product-grid { grid-template-columns: 1fr; }
+  .section-title { font-size: 24px; }
 }
