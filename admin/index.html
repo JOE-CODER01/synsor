@@ -9,7 +9,6 @@
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', sans-serif; background: #F5F5F5; color: #000; }
 
-    /* LOGIN */
     .login-screen {
       min-height: 100vh;
       display: flex;
@@ -39,9 +38,7 @@
       margin-bottom: 32px;
     }
 
-    .form-group {
-      margin-bottom: 16px;
-    }
+    .form-group { margin-bottom: 16px; }
 
     .form-group label {
       display: block;
@@ -52,7 +49,7 @@
       margin-bottom: 8px;
     }
 
-    .form-group input {
+    .form-group input, .form-group select {
       width: 100%;
       height: 48px;
       border: 1px solid #CCCCCC;
@@ -63,9 +60,7 @@
       border-radius: 0;
     }
 
-    .form-group input:focus {
-      border-color: #000;
-    }
+    .form-group input:focus { border-color: #000; }
 
     .btn-full {
       width: 100%;
@@ -90,7 +85,6 @@
       display: none;
     }
 
-    /* DASHBOARD */
     .dashboard { display: none; }
 
     .dash-nav {
@@ -116,7 +110,6 @@
       font-size: 13px;
       cursor: pointer;
       font-family: 'Inter', sans-serif;
-      transition: all 200ms;
     }
 
     .btn-logout:hover { color: #fff; border-color: #fff; }
@@ -139,7 +132,6 @@
       margin-bottom: 32px;
     }
 
-    /* UPLOAD FORM */
     .upload-form {
       background: #fff;
       border: 1px solid #CCCCCC;
@@ -197,12 +189,15 @@
 
     .upload-status {
       font-size: 13px;
-      color: #666;
+      color: #333;
       margin-bottom: 16px;
       min-height: 20px;
+      padding: 8px;
+      background: #F5F5F5;
+      border-left: 3px solid #000;
+      display: none;
     }
 
-    /* PRODUCT LIST */
     .products-list h3 {
       font-family: 'Playfair Display', serif;
       font-size: 20px;
@@ -228,9 +223,7 @@
       border: 1px solid #CCCCCC;
     }
 
-    .product-item-info {
-      flex: 1;
-    }
+    .product-item-info { flex: 1; }
 
     .product-item-name {
       font-weight: 600;
@@ -278,7 +271,6 @@
 </head>
 <body>
 
-  <!-- LOGIN -->
   <div class="login-screen" id="loginScreen">
     <div class="login-box">
       <h1 class="login-logo">OLAD & SYNSOR</h1>
@@ -296,7 +288,6 @@
     </div>
   </div>
 
-  <!-- DASHBOARD -->
   <div class="dashboard" id="dashboard">
     <nav class="dash-nav">
       <h1 class="dash-logo">OLAD & SYNSOR</h1>
@@ -307,7 +298,6 @@
       <h2 class="dash-title">Product Manager</h2>
       <p class="dash-sub">Add and manage products on the storefront.</p>
 
-      <!-- UPLOAD FORM -->
       <div class="upload-form">
         <h3>Add New Product</h3>
 
@@ -319,7 +309,7 @@
           <input type="file" id="photoInput" accept="image/*" onchange="previewPhoto(this)">
         </div>
 
-        <p class="upload-status" id="uploadStatus"></p>
+        <div class="upload-status" id="uploadStatus"></div>
 
         <div class="form-group">
           <label>Product Name</label>
@@ -333,7 +323,7 @@
           </div>
           <div class="form-group">
             <label>Category</label>
-            <select id="productCategory" style="width:100%;height:48px;border:1px solid #CCCCCC;padding:0 16px;font-size:16px;font-family:'Inter',sans-serif;border-radius:0;outline:none;">
+            <select id="productCategory">
               <option value="streetwear">Streetwear</option>
               <option value="corporate">Corporate</option>
             </select>
@@ -343,39 +333,38 @@
         <button class="btn-full" onclick="addProduct()">Upload & Publish Product</button>
       </div>
 
-      <!-- PRODUCT LIST -->
       <div class="products-list">
         <h3>Live Products</h3>
         <div id="productsList">
-          <div class="empty-state">No products yet. Add your first product above.</div>
+          <div class="empty-state">No products yet.</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- FIREBASE -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-    const firebaseConfig = {
+    const app = initializeApp({
       apiKey: "AIzaSyCqa4koTFTNxV2aps89jTRpH2EPF8GoLzE",
       authDomain: "synsor-83edc.firebaseapp.com",
       projectId: "synsor-83edc",
       storageBucket: "synsor-83edc.firebasestorage.app",
       messagingSenderId: "185298581474",
       appId: "1:185298581474:web:8d8988ac96474fd8c6ebbb"
-    };
+    });
 
-    const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    const CLOUD_NAME = "dzupp2dev";
-    const UPLOAD_PRESET = "dsgefk6j";
+    const setStatus = (msg) => {
+      const el = document.getElementById('uploadStatus');
+      el.style.display = 'block';
+      el.textContent = msg;
+    };
 
-    // AUTH STATE
     onAuthStateChanged(auth, (user) => {
       if (user) {
         document.getElementById('loginScreen').style.display = 'none';
@@ -387,25 +376,19 @@
       }
     });
 
-    // LOGIN
     window.login = async () => {
       const email = document.getElementById('emailInput').value;
       const password = document.getElementById('passwordInput').value;
-      const errorMsg = document.getElementById('errorMsg');
       try {
         await signInWithEmailAndPassword(auth, email, password);
-        errorMsg.style.display = 'none';
+        document.getElementById('errorMsg').style.display = 'none';
       } catch (e) {
-        errorMsg.style.display = 'block';
+        document.getElementById('errorMsg').style.display = 'block';
       }
     };
 
-    // LOGOUT
-    window.logout = async () => {
-      await signOut(auth);
-    };
+    window.logout = async () => { await signOut(auth); };
 
-    // PREVIEW PHOTO
     window.previewPhoto = (input) => {
       const file = input.files[0];
       if (!file) return;
@@ -419,49 +402,48 @@
       reader.readAsDataURL(file);
     };
 
-    // ADD PRODUCT
     window.addProduct = async () => {
       const name = document.getElementById('productName').value.trim();
       const price = document.getElementById('productPrice').value.trim();
       const category = document.getElementById('productCategory').value;
       const file = document.getElementById('photoInput').files[0];
-      const status = document.getElementById('uploadStatus');
 
       if (!name || !price || !file) {
-        status.textContent = '⚠️ Fill all fields and select a photo.';
+        setStatus('⚠️ Fill all fields and select a photo.');
         return;
       }
 
-      status.textContent = 'Uploading photo...';
+      setStatus('Uploading photo...');
 
       try {
-        // Upload to Cloudinary
         const formData = new FormData();
         formData.append('file', file);
-        formData.append('upload_preset', UPLOAD_PRESET);
+        formData.append('upload_preset', 'dsgefk6j');
 
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+        const res = await fetch('https://api.cloudinary.com/v1_1/dzupp2dev/image/upload', {
           method: 'POST',
           body: formData
         });
 
         const data = await res.json();
-        const imageUrl = data.secure_url;
 
-        status.textContent = 'Saving product...';
+        if (!res.ok) {
+          setStatus('❌ Cloudinary error: ' + (data.error?.message || JSON.stringify(data)));
+          return;
+        }
 
-        // Save to Firestore
+        setStatus('Photo uploaded. Saving product...');
+
         await addDoc(collection(db, 'products'), {
           name,
           price: Number(price),
           category,
-          imageUrl,
+          imageUrl: data.secure_url,
           createdAt: serverTimestamp()
         });
 
-        status.textContent = '✅ Product published successfully!';
+        setStatus('✅ Product published successfully!');
 
-        // Reset form
         document.getElementById('productName').value = '';
         document.getElementById('productPrice').value = '';
         document.getElementById('photoInput').value = '';
@@ -471,40 +453,42 @@
         loadProducts();
 
       } catch (e) {
-        status.textContent = '❌ Error: ' + e.message;
+        setStatus('❌ Error: ' + e.message);
       }
     };
 
-    // LOAD PRODUCTS
     window.loadProducts = async () => {
       const list = document.getElementById('productsList');
       list.innerHTML = '<p style="color:#999;font-size:13px;padding:16px;">Loading...</p>';
 
-      const snapshot = await getDocs(collection(db, 'products'));
+      try {
+        const snapshot = await getDocs(collection(db, 'products'));
 
-      if (snapshot.empty) {
-        list.innerHTML = '<div class="empty-state">No products yet. Add your first product above.</div>';
-        return;
-      }
+        if (snapshot.empty) {
+          list.innerHTML = '<div class="empty-state">No products yet. Add your first product above.</div>';
+          return;
+        }
 
-      list.innerHTML = '';
-      snapshot.forEach((docSnap) => {
-        const p = docSnap.data();
-        list.innerHTML += `
-          <div class="product-item">
-            <img src="${p.imageUrl}" alt="${p.name}">
-            <div class="product-item-info">
-              <p class="product-item-name">${p.name}</p>
-              <p class="product-item-price">₦${Number(p.price).toLocaleString()}</p>
-              <p class="product-item-cat">${p.category}</p>
+        list.innerHTML = '';
+        snapshot.forEach((docSnap) => {
+          const p = docSnap.data();
+          list.innerHTML += `
+            <div class="product-item">
+              <img src="${p.imageUrl}" alt="${p.name}">
+              <div class="product-item-info">
+                <p class="product-item-name">${p.name}</p>
+                <p class="product-item-price">₦${Number(p.price).toLocaleString()}</p>
+                <p class="product-item-cat">${p.category}</p>
+              </div>
+              <button class="btn-delete" onclick="deleteProduct('${docSnap.id}')">Delete</button>
             </div>
-            <button class="btn-delete" onclick="deleteProduct('${docSnap.id}')">Delete</button>
-          </div>
-        `;
-      });
+          `;
+        });
+      } catch(e) {
+        list.innerHTML = '<div class="empty-state">Error loading: ' + e.message + '</div>';
+      }
     };
 
-    // DELETE PRODUCT
     window.deleteProduct = async (id) => {
       if (!confirm('Delete this product?')) return;
       await deleteDoc(doc(db, 'products', id));
