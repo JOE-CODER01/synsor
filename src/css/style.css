@@ -368,7 +368,7 @@ h1, h2, h3, h4 {
   .logo { font-size: 16px; letter-spacing: 2px; }
   .btn-primary { padding: 12px 18px; font-size: 12px; }
   .tab-btn { padding: 8px 14px; font-size: 11px; }
-  .product-grid { grid-template-columns: 1fr 1fr; }
+  .product-grid { grid-template-columns: 1fr; }
   .section-title { font-size: 26px; }
   .hero-logo { width: 100px; }
 }
