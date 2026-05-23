@@ -109,19 +109,20 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
     import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
     const app = initializeApp({
       apiKey: "AIzaSyCqa4koTFTNxV2aps89jTRpH2EPF8GoLzE",
       authDomain: "synsor-83edc.firebaseapp.com",
       projectId: "synsor-83edc",
+      databaseURL: "https://synsor-83edc-default-rtdb.firebaseio.com",
       storageBucket: "synsor-83edc.firebasestorage.app",
       messagingSenderId: "185298581474",
       appId: "1:185298581474:web:8d8988ac96474fd8c6ebbb"
     });
 
-    const db = getFirestore(app);
+    const db = getDatabase(app);
     const auth = getAuth(app);
 
     const log = (msg) => {
@@ -140,7 +141,6 @@
       if (user) {
         document.getElementById('loginScreen').style.display = 'none';
         document.getElementById('dashboard').style.display = 'block';
-        log('✅ Logged in as: ' + user.email);
         loadProducts();
       } else {
         document.getElementById('loginScreen').style.display = 'flex';
@@ -187,53 +187,38 @@
         return;
       }
 
-      log('Step 1: Starting upload...');
-      log('File: ' + file.name + ' (' + file.size + ' bytes)');
-
-      let imageUrl = '';
+      log('Uploading photo...');
 
       try {
         const formData = new FormData();
         formData.append('file', file);
         formData.append('upload_preset', 'dsgefk6j');
 
-        log('Step 2: Sending to Cloudinary...');
-
         const res = await fetch('https://api.cloudinary.com/v1_1/dzupp2dev/image/upload', {
           method: 'POST',
           body: formData
         });
 
-        log('Step 3: Cloudinary response status: ' + res.status);
-
         const data = await res.json();
-        log('Step 4: Response data: ' + JSON.stringify(data).substring(0, 100));
 
-        if (data.secure_url) {
-          imageUrl = data.secure_url;
-          log('Step 5: Image URL: ' + imageUrl.substring(0, 50) + '...');
-        } else {
-          log('❌ No secure_url in response: ' + JSON.stringify(data));
+        if (!data.secure_url) {
+          log('❌ Cloudinary error: ' + JSON.stringify(data));
           return;
         }
 
-      } catch (e) {
-        log('❌ Cloudinary fetch error: ' + e.message);
-        log('Trying with placeholder image instead...');
-        imageUrl = 'https://placehold.co/400x400?text=' + encodeURIComponent(name);
-      }
+        log('✅ Photo uploaded!');
+        log('Saving to database...');
 
-      log('Step 6: Saving to Firestore...');
-await new Promise(resolve => setTimeout(resolve, 1000));
-      try {
-        const docRef = await addDoc(collection(db, 'products'), {
+        const productsRef = ref(db, 'products');
+        await push(productsRef, {
           name,
           price: Number(price),
           category,
-          imageUrl,
-          createdAt: serverTimestamp()
+          imageUrl: data.secure_url,
+          createdAt: Date.now()
         });
-        log('✅ Product saved! ID: ' + docRef.id);
+
+        log('✅ Product published successfully!');
 
         document.getElementById('productName').value = '';
         document.getElementById('productPrice').value = '';
@@ -241,26 +226,25 @@ await new Promise(resolve => setTimeout(resolve, 1000));
         document.getElementById('previewImg').style.display = 'none';
         document.getElementById('previewText').style.display = 'block';
 
-        loadProducts();
-
       } catch (e) {
-        log('❌ Firestore error: ' + e.message);
-        log('Error code: ' + e.code);
+        log('❌ Error: ' + e.message);
       }
     };
 
-    window.loadProducts = async () => {
+    window.loadProducts = () => {
       const list = document.getElementById('productsList');
       list.innerHTML = '<p style="color:#999;font-size:13px;padding:16px;">Loading...</p>';
-      try {
-        const snapshot = await getDocs(collection(db, 'products'));
-        if (snapshot.empty) {
+
+      const productsRef = ref(db, 'products');
+      onValue(productsRef, (snapshot) => {
+        const data = snapshot.val();
+        if (!data) {
           list.innerHTML = '<div class="empty-state">No products yet.</div>';
           return;
         }
+
         list.innerHTML = '';
-        snapshot.forEach((docSnap) => {
-          const p = docSnap.data();
+        Object.entries(data).reverse().forEach(([id, p]) => {
           list.innerHTML += `
             <div class="product-item">
               <img src="${p.imageUrl}" alt="${p.name}">
@@ -269,19 +253,16 @@ await new Promise(resolve => setTimeout(resolve, 1000));
                 <p class="product-item-price">₦${Number(p.price).toLocaleString()}</p>
                 <p class="product-item-cat">${p.category}</p>
               </div>
-              <button class="btn-delete" onclick="deleteProduct('${docSnap.id}')">Delete</button>
+              <button class="btn-delete" onclick="deleteProduct('${id}')">Delete</button>
             </div>
           `;
         });
-      } catch(e) {
-        list.innerHTML = '<div class="empty-state">Error: ' + e.message + '</div>';
-      }
+      });
     };
 
     window.deleteProduct = async (id) => {
       if (!confirm('Delete this product?')) return;
-      await deleteDoc(doc(db, 'products', id));
-      loadProducts();
+      await remove(ref(db, 'products/' + id));
     };
   </script>
 
